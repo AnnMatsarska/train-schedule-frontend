@@ -1,0 +1,54 @@
+@use "@/styles/breakpoints" as *;
+@use "@/styles/fonts" as *;
+
+.mainWrapper {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  height: 100vh;
+  padding: 32px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 30px;
+  background: rgb(31, 31, 31);
+  text-align: center;
+  position: relative;
+
+  @include respond-to("desktop") {
+    width: 600px;
+    padding: 40px 64px;
+  }
+}
+
+.logoWrapper {
+  position: absolute;
+  top: 20px;
+  left: 64px;
+  height: 10px;
+  width: 40px;
+}
+
+.logoBox {
+  display: flex;
+  text-transform: uppercase;
+  gap: 12px;
+  width: 300px;
+}
+
+.title {
+  font-size: $font-5xl;
+  @include respond-to("desktop") {
+    font-size: $font-5xl;
+  }
+}
+
+.text {
+  font-size: $font-2xl;
+  @include respond-to("desktop") {
+    font-size: $font-2xl;
+  }
+}

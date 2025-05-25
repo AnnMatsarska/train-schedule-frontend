@@ -1,0 +1,49 @@
+$mobile-width: 375px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+
+$breakpoints: (
+  "mobile": (
+    "min-width": $mobile-width,
+  ),
+  "tablet": (
+    "min-width": $tablet-width,
+  ),
+  "desktop": (
+    "min-width": $desktop-width,
+  ),
+  "mobile-only": (
+    "max-width": $tablet-width - 1px,
+  ),
+  "tablet-only": (
+    "min-width": $tablet-width,
+    "max-width": $desktop-width - 1px,
+  ),
+  "desktop-only": (
+    "min-width": $desktop-width,
+  ),
+);
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $query: map-get($breakpoints, $breakpoint);
+    $media-query: "";
+
+    @if map-has-key($query, "min-width") {
+      $media-query: "(min-width: #{map-get($query, "min-width")})";
+    }
+
+    @if map-has-key($query, "max-width") {
+      @if $media-query != "" {
+        $media-query: "#{$media-query} and ";
+      }
+      $media-query: "#{$media-query}(max-width: #{map-get($query, "max-width")})";
+    }
+
+    @media #{$media-query} {
+      @content;
+    }
+  } @else {
+    @warn "No media query found for '#{$breakpoint}'. Valid keys are: #{map-keys($breakpoints)}.";
+  }
+}
