@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { APP_ROUTES } from "@/config/routes";
 import { useAuth } from "@/context/AuthContext";
-import Spinner from "@/components/Spinner/Spinner";
+import { Spinner } from "@/components/Spinner/Spinner";
 
 export default function HomePage() {
   const { user } = useAuth();
