@@ -20,7 +20,7 @@ export const AuthPageComponent = () => {
         </div>
         {isLoginPage ? <LoginForm /> : <RegisterForm />}
       </div>
-      <div className={styles.box}>
+      <div className={`${styles.box} ${styles.rightBox}`}>
         <h2 className={styles.title}>Train Journey</h2>
         <p className={styles.text}>Admin panel</p>
       </div>

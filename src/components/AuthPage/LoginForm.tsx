@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import Link from "next/link";
+import styles from "./Auth.module.scss";
 
 export const LoginForm = () => {
   const { login } = useAuth();
@@ -24,7 +25,7 @@ export const LoginForm = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      await login(values.email.trim(), values.password.trim());
+      await login(values.email.trim(), values.password);
     },
   });
 
@@ -34,12 +35,9 @@ export const LoginForm = () => {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      minHeight="100vh"
     >
-      <Typography variant="h1" gutterBottom fontSize="48px">
-        Hello Again!
-      </Typography>
-      <Paper elevation={4} sx={{ padding: 4, width: 500 }}>
+      <h1 className={styles.formTitle}> Hello Again!</h1>
+      <Paper elevation={4} className={styles.authBox}>
         <Typography variant="h5" gutterBottom>
           Login
         </Typography>

@@ -15,7 +15,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user, router]);
 
-  if (!user) return <Spinner />;
+  if (!user) return <Spinner fullPage />;
 
   return <>{children}</>;
 };

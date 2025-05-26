@@ -18,5 +18,5 @@ export default function HomePage() {
     }
   }, [user, router]);
 
-  return <Spinner />;
+  return <Spinner fullPage />;
 }

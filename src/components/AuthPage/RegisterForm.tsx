@@ -3,16 +3,10 @@
 import { APP_ROUTES } from "@/config/routes";
 import { useAuth } from "@/context/AuthContext";
 import { loginSchema } from "@/validation/login.schema";
-import {
-  Box,
-  Button,
-  Paper,
-  TextField,
-  Typography,
-  Link as MuiLink,
-} from "@mui/material";
+import { Box, Button, Paper, TextField, Link as MuiLink } from "@mui/material";
 import { useFormik } from "formik";
 import Link from "next/link";
+import styles from "./Auth.module.scss";
 
 export const RegisterForm = () => {
   const { register } = useAuth();
@@ -28,7 +22,7 @@ export const RegisterForm = () => {
     onSubmit: async (values) => {
       const trimmedValues = {
         email: values.email.trim(),
-        password: values.password.trim(),
+        password: values.password,
         firstName: values.firstName.trim(),
         lastName: values.lastName.trim(),
       };
@@ -42,15 +36,10 @@ export const RegisterForm = () => {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      minHeight="100vh"
     >
-      <Typography variant="h1" fontSize="32px" mb={3}>
-        Welcome to Train Journey!
-      </Typography>
-      <Paper elevation={4} sx={{ padding: 4, width: 500 }}>
-        <Typography variant="h5" gutterBottom>
-          Register
-        </Typography>
+      <h1 className={styles.formTitle}> Welcome to Train Journey!</h1>
+      <Paper elevation={4} className={styles.authBox}>
+        <h5 className={styles.formSubTitle}>Register</h5>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             fullWidth
