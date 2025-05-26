@@ -16,7 +16,7 @@ export default function HomePage() {
     } else {
       router.push(APP_ROUTES.LOGIN);
     }
-  }, [user]);
+  }, [user, router]);
 
   return <Spinner />;
 }
