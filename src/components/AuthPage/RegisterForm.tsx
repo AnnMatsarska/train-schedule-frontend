@@ -26,7 +26,13 @@ export const RegisterForm = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      await register(values);
+      const trimmedValues = {
+        email: values.email.trim(),
+        password: values.password.trim(),
+        firstName: values.firstName.trim(),
+        lastName: values.lastName.trim(),
+      };
+      await register(trimmedValues);
     },
   });
 

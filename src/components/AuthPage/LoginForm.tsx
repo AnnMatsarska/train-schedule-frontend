@@ -24,7 +24,7 @@ export const LoginForm = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      await login(values.email, values.password);
+      await login(values.email.trim(), values.password.trim());
     },
   });
 
