@@ -1,9 +1,9 @@
 // API Routes
 export const API_ROUTES = {
-  LOGIN: "/api/auth/login",
-  REGISTER: "/api/auth/register",
-  PROFILE: "/api/auth/profile",
-  TRAINS: "/api/trains",
+  LOGIN: "/auth/login",
+  REGISTER: "/auth/register",
+  PROFILE: "/auth/profile",
+  TRAINS: "/trains",
 };
 
 // FE Routes
