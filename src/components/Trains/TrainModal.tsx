@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 
 import { useFormik } from "formik";
+import { useEffect } from "react";
 
 export interface TrainFormValues {
   trainNumber: string;
@@ -43,21 +44,23 @@ export const TrainModal = ({
 }: TrainModalProps) => {
   const isEdit = !!initialValues;
 
-  const formik = useFormik<TrainFormValues>({
-    initialValues: initialValues || {
-      trainNumber: "",
-      price: 0,
-      departure: {
-        station: "",
-        date: "",
-        time: "",
-      },
-      arrival: {
-        station: "",
-        date: "",
-        time: "",
-      },
+  const defaultValues: TrainFormValues = {
+    trainNumber: "",
+    price: 0,
+    departure: {
+      station: "",
+      date: "",
+      time: "",
     },
+    arrival: {
+      station: "",
+      date: "",
+      time: "",
+    },
+  };
+
+  const formik = useFormik<TrainFormValues>({
+    initialValues: initialValues || defaultValues,
     validationSchema: trainSchema,
     onSubmit: async (values) => {
       await onSubmit(values);
@@ -65,6 +68,12 @@ export const TrainModal = ({
     },
     enableReinitialize: true,
   });
+
+  useEffect(() => {
+    if (open && !isEdit) {
+      formik.resetForm({ values: defaultValues });
+    }
+  }, [open, isEdit]);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
