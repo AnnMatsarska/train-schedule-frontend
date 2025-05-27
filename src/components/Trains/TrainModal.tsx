@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  useMediaQuery,
 } from "@mui/material";
 
 import { useFormik } from "formik";
@@ -43,6 +44,7 @@ export const TrainModal = ({
   onSubmit,
 }: TrainModalProps) => {
   const isEdit = !!initialValues;
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   const defaultValues: TrainFormValues = {
     trainNumber: "",
@@ -108,7 +110,11 @@ export const TrainModal = ({
               helperText={formik.touched.price && formik.errors.price}
             />
 
-            <Box display="flex" gap={2}>
+            <Box
+              display="flex"
+              gap={2}
+              flexDirection={isMobile ? "column" : "row"}
+            >
               <TextField
                 fullWidth
                 label="Departure Station"
@@ -163,7 +169,11 @@ export const TrainModal = ({
               />
             </Box>
 
-            <Box display="flex" gap={2}>
+            <Box
+              display="flex"
+              gap={2}
+              flexDirection={isMobile ? "column" : "row"}
+            >
               <TextField
                 fullWidth
                 label="Arrival Station"
