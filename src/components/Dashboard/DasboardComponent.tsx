@@ -3,15 +3,18 @@ import { getAllTrains } from "@/services/train.service";
 import { Train, TrainSortField, TrainSortOrder } from "@/types/trains";
 import React, { useEffect, useState } from "react";
 import { TrainTable } from "../Trains/TrainsTable";
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 
 import styles from "./Dashboard.module.scss";
 import { Spinner } from "../Spinner/Spinner";
 import { DashboardStats } from "./DashboardStats";
+import { MobileTrainCards } from "../Trains/MobileTrainCards";
 
 const DasboardComponent = () => {
   const [trains, setTrains] = useState<Train[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const isMobile = useMediaQuery("(max-width: 900px)");
 
   const fetchSortedTrains = async (
     field: TrainSortField,
@@ -41,7 +44,11 @@ const DasboardComponent = () => {
       {loading ? (
         <Spinner />
       ) : trains.length > 0 ? (
-        <TrainTable trains={trains} />
+        isMobile ? (
+          <MobileTrainCards trains={trains} />
+        ) : (
+          <TrainTable trains={trains} />
+        )
       ) : (
         <Typography sx={{ mt: 4 }} variant="body1" textAlign="center">
           No trains found.

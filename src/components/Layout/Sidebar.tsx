@@ -5,12 +5,16 @@ import { APP_ROUTES } from "@/config/routes";
 import styles from "./Layout.module.scss";
 import { usePathname } from "next/navigation";
 
-export const Sidebar = () => {
+interface SidebarProps {
+  className?: string;
+}
+
+export const Sidebar = ({ className }: SidebarProps) => {
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname === path;
   return (
-    <aside className={styles.sidebar}>
+    <aside className={`${styles.sidebar} ${className}`}>
       <h2 className={styles.logo}>TRAINS SCHEDULE</h2>
       <nav>
         <ul className={styles.list}>

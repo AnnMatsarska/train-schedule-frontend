@@ -10,16 +10,31 @@
 .sidebar {
   width: 340px;
   padding: 40px;
-  border-right: 1px solid white;
   display: flex;
   flex-direction: column;
   gap: 52px;
+
+  @include respond-to("tablet") {
+    border-right: 1px solid white;
+  }
+}
+
+.sidebarInline {
+  display: none;
+  @include respond-to("tablet") {
+    display: flex;
+  }
 }
 
 .header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   padding: 32px 40px;
+
+  @include respond-to("tablet") {
+    justify-content: flex-end;
+  }
 }
 
 .logo {
