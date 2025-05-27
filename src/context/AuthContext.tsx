@@ -19,6 +19,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const login = async (email: string, password: string): Promise<void> => {
@@ -47,16 +48,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(data.user);
     } catch {
       logout();
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) fetchProfile();
+    if (token) {
+      fetchProfile();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

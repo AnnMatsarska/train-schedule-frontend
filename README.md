@@ -37,11 +37,9 @@ A modern frontend dashboard for managing and displaying train schedules. Built w
 
 ### 🚧 To Do (Next Steps):
 
-- 📱 **Responsive design** (for mobile & tablets)
 - ✅ **Success and error toast messages**
 - 📄 **Pagination** for train listings
 - 🔁 Password reset functionality
-- 🔍 Advanced train search & filter (by station, date, etc.)
 
 ---
 

@@ -6,16 +6,16 @@ import { useEffect } from "react";
 import { APP_ROUTES } from "@/config/routes";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
+    if (!loading && !user) {
       router.push(APP_ROUTES.LOGIN);
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
-  if (!user) return <Spinner fullPage />;
+  if (loading || !user) return <Spinner fullPage />;
 
   return <>{children}</>;
 };
