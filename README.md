@@ -35,14 +35,6 @@ A modern frontend dashboard for managing and displaying train schedules. Built w
 
 ---
 
-### 🚧 To Do (Next Steps):
-
-- ✅ **Success and error toast messages**
-- 📄 **Pagination** for train listings
-- 🔁 Password reset functionality
-
----
-
 ## 🚀 Local Setup
 
 > Prerequisite: Node.js

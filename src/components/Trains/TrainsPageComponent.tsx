@@ -26,6 +26,8 @@ import { Spinner } from "../Spinner/Spinner";
 import { MobileTrainCards } from "./MobileTrainCards";
 import { FieldEditModal } from "./FieldEditModal";
 import { useTrainStore } from "@/stores/useTrainStore";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export const TrainsPageComponent = () => {
   const {
@@ -79,8 +81,14 @@ export const TrainsPageComponent = () => {
         [field]: field === "price" ? Number(newValue) : newValue,
       });
       await fetchSortedTrains();
+      toast.success("Train updated successfully");
     } catch (err) {
-      console.error("Patch failed", err);
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.error || "Failed to update field";
+        toast.error(message);
+      } else {
+        toast.error("Unexpected error");
+      }
     }
   };
 
@@ -99,8 +107,10 @@ export const TrainsPageComponent = () => {
       await deleteTrain(train.id);
       invalidateTrains();
       await fetchSortedTrains();
+      toast.success("Train deleted successfully");
     } catch (e) {
       console.error("Failed to delete train:", e);
+      toast.error("Failed to delete train");
     }
   };
 
@@ -118,13 +128,21 @@ export const TrainsPageComponent = () => {
 
       if (selectedTrain) {
         await updateTrain(selectedTrain.id, payload);
+        toast.success("Train updated successfully");
       } else {
         await createTrain(payload);
+        toast.success("Train added successfully");
       }
+
       invalidateTrains();
       await fetchSortedTrains();
     } catch (e) {
-      console.error("Submission error:", e);
+      if (axios.isAxiosError(e)) {
+        const message = e.response?.data?.error || "Failed to save train";
+        toast.error(message);
+      } else {
+        toast.error("Unexpected error");
+      }
     }
   };
 

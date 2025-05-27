@@ -14,6 +14,7 @@ import {
   RegisterForm,
   User,
 } from "@/types/authContext";
+import toast from "react-hot-toast";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -23,17 +24,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
 
   const login = async (email: string, password: string): Promise<void> => {
-    const data = await loginUser(email, password);
-    localStorage.setItem("token", data.token);
-    setUser(data.user);
-    router.push(APP_ROUTES.DASHBOARD);
+    try {
+      const data = await loginUser(email, password);
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
+      router.push(APP_ROUTES.DASHBOARD);
+    } catch (err) {
+      console.error("Login failed", err);
+      toast.error("Login failed");
+    }
   };
 
   const register = async (formData: RegisterForm): Promise<void> => {
-    const data = await registerUser(formData);
-    localStorage.setItem("token", data.token);
-    setUser(data.user);
-    router.push(APP_ROUTES.DASHBOARD);
+    try {
+      const data = await registerUser(formData);
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
+      router.push(APP_ROUTES.DASHBOARD);
+    } catch (err) {
+      console.error("Login failed", err);
+      toast.error("Register failed");
+    }
   };
 
   const logout = (): void => {
