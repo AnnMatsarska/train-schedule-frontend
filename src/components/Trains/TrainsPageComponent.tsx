@@ -3,7 +3,6 @@
 import {
   createTrain,
   deleteTrain,
-  getAllTrains,
   partialUpdateTrain,
   updateTrain,
 } from "@/services/train.service";
@@ -26,12 +25,19 @@ import { TrainFormValues, TrainModal } from "./TrainModal";
 import { Spinner } from "../Spinner/Spinner";
 import { MobileTrainCards } from "./MobileTrainCards";
 import { FieldEditModal } from "./FieldEditModal";
+import { useTrainStore } from "@/stores/useTrainStore";
 
 export const TrainsPageComponent = () => {
-  const [trains, setTrains] = useState<Train[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [sortValue, setSortValue] = useState("price_asc");
+  const {
+    trains,
+    loading,
+    sortField,
+    sortOrder,
+    fetchSortedTrains,
+    invalidateTrains,
+  } = useTrainStore();
 
+  const [sortValue, setSortValue] = useState(`${sortField}_${sortOrder}`);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTrain, setSelectedTrain] = useState<Train | null>(null);
 
@@ -44,29 +50,15 @@ export const TrainsPageComponent = () => {
 
   const isMobile = useMediaQuery("(max-width: 900px)");
 
-  const fetchSortedTrains = async (
-    field: TrainSortField,
-    order: TrainSortOrder
-  ) => {
-    setLoading(true);
-    try {
-      const data = await getAllTrains(field, order);
-      setTrains(data);
-    } catch (error) {
-      console.error("Error fetching trains:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchSortedTrains(TrainSortField.PRICE, "asc");
-  }, []);
+    if (!trains.length) {
+      fetchSortedTrains();
+    }
+  }, [trains.length, fetchSortedTrains]);
 
   const handleSortChange = (event: SelectChangeEvent) => {
-    const value = event.target.value;
-    setSortValue(value);
-    const [field, order] = value.split("_");
+    const [field, order] = event.target.value.split("_");
+    setSortValue(event.target.value);
     fetchSortedTrains(field as TrainSortField, order as TrainSortOrder);
   };
 
@@ -86,7 +78,7 @@ export const TrainsPageComponent = () => {
       await partialUpdateTrain(train.id, {
         [field]: field === "price" ? Number(newValue) : newValue,
       });
-      fetchSortedTrains(TrainSortField.PRICE, "asc");
+      await fetchSortedTrains();
     } catch (err) {
       console.error("Patch failed", err);
     }
@@ -105,7 +97,8 @@ export const TrainsPageComponent = () => {
   const handleDelete = async (train: Train) => {
     try {
       await deleteTrain(train.id);
-      await fetchSortedTrains(TrainSortField.PRICE, "asc");
+      invalidateTrains();
+      await fetchSortedTrains();
     } catch (e) {
       console.error("Failed to delete train:", e);
     }
@@ -128,7 +121,8 @@ export const TrainsPageComponent = () => {
       } else {
         await createTrain(payload);
       }
-      await fetchSortedTrains(TrainSortField.PRICE, "asc");
+      invalidateTrains();
+      await fetchSortedTrains();
     } catch (e) {
       console.error("Submission error:", e);
     }

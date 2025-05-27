@@ -1,7 +1,6 @@
 "use client";
-import { getAllTrains } from "@/services/train.service";
-import { Train, TrainSortField, TrainSortOrder } from "@/types/trains";
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect } from "react";
 import { TrainTable } from "../Trains/TrainsTable";
 import { Typography, useMediaQuery } from "@mui/material";
 
@@ -9,31 +8,17 @@ import styles from "./Dashboard.module.scss";
 import { Spinner } from "../Spinner/Spinner";
 import { DashboardStats } from "./DashboardStats";
 import { MobileTrainCards } from "../Trains/MobileTrainCards";
+import { useTrainStore } from "@/stores/useTrainStore";
 
 const DasboardComponent = () => {
-  const [trains, setTrains] = useState<Train[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-
+  const { trains, loading, fetchSortedTrains } = useTrainStore();
   const isMobile = useMediaQuery("(max-width: 900px)");
 
-  const fetchSortedTrains = async (
-    field: TrainSortField,
-    order: TrainSortOrder
-  ) => {
-    setLoading(true);
-    try {
-      const data = await getAllTrains(field, order);
-      setTrains(data);
-    } catch (error) {
-      console.error("Error fetching trains:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchSortedTrains(TrainSortField.PRICE, "asc");
-  }, []);
+    if (!trains.length) {
+      fetchSortedTrains();
+    }
+  }, [trains.length, fetchSortedTrains]);
   return (
     <>
       <div className={styles.header}>
