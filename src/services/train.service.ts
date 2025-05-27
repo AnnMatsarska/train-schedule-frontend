@@ -4,20 +4,20 @@ import {
   CreateUpdateTrainInput,
   PartialTrainInput,
   Train,
-  TrainSortField,
-  TrainSortOrder,
 } from "@/types/trains";
 
 export const getAllTrains = async (
-  sortBy: TrainSortField,
-  order: TrainSortOrder
-): Promise<Train[]> => {
+  sortField: string,
+  sortOrder: string,
+  page: number,
+  limit: number,
+  all: boolean = false
+) => {
   const { data } = await api.get(API_ROUTES.TRAINS, {
-    params: { sortBy, order },
+    params: { sortBy: sortField, order: sortOrder, page, limit, all },
   });
   return data;
 };
-
 export const getTrainById = async (id: string): Promise<Train> => {
   const { data } = await api.get(`${API_ROUTES.TRAINS}/${id}`);
   return data;

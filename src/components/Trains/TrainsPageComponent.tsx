@@ -28,14 +28,19 @@ import { FieldEditModal } from "./FieldEditModal";
 import { useTrainStore } from "@/stores/useTrainStore";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { Pagination } from "@mui/material";
 
 export const TrainsPageComponent = () => {
   const {
     trains,
     loading,
+    total,
+    page,
+    limit,
     sortField,
     sortOrder,
     fetchSortedTrains,
+    setPage,
     invalidateTrains,
   } = useTrainStore();
 
@@ -53,10 +58,12 @@ export const TrainsPageComponent = () => {
   const isMobile = useMediaQuery("(max-width: 900px)");
 
   useEffect(() => {
-    if (!trains.length) {
-      fetchSortedTrains();
-    }
-  }, [trains.length, fetchSortedTrains]);
+    fetchSortedTrains();
+  }, [fetchSortedTrains]);
+
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
 
   const handleSortChange = (event: SelectChangeEvent) => {
     const [field, order] = event.target.value.split("_");
@@ -169,21 +176,45 @@ export const TrainsPageComponent = () => {
         <Spinner />
       ) : trains.length > 0 ? (
         isMobile ? (
-          <MobileTrainCards
-            trains={trains}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onInlineEditClick={handleInlineEditClick}
-            showActions
-          />
+          <>
+            <MobileTrainCards
+              trains={trains}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onInlineEditClick={handleInlineEditClick}
+              showActions
+            />
+            {total > limit && (
+              <Box display="flex" justifyContent="center" mt={4} mb={4}>
+                <Pagination
+                  count={Math.ceil(total / limit)}
+                  page={page}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
+              </Box>
+            )}
+          </>
         ) : (
-          <TrainTable
-            trains={trains}
-            showActions
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onInlineEditClick={handleInlineEditClick}
-          />
+          <>
+            <TrainTable
+              trains={trains}
+              showActions
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onInlineEditClick={handleInlineEditClick}
+            />
+            {total > limit && (
+              <Box display="flex" justifyContent="center" mt={4}>
+                <Pagination
+                  count={Math.ceil(total / limit)}
+                  page={page}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
+              </Box>
+            )}
+          </>
         )
       ) : (
         <Typography sx={{ mt: 4 }} variant="body1" textAlign="center">
