@@ -10,6 +10,7 @@ A modern frontend dashboard for managing and displaying train schedules. Built w
 - **TypeScript**
 - **Material UI**
 - **Axios**
+- **Zustand**
 - **JWT token**
 - **Deployed on Vercel**
 
@@ -21,6 +22,7 @@ A modern frontend dashboard for managing and displaying train schedules. Built w
 
 - 🔐 User login & registration (with JWT)
 - 👤 Authenticated user profile page
+- 📱 **Responsive design** (for mobile & tablets)
 - 🖥️ Dashboard with:
   - Total train count
   - Most frequent departure city
