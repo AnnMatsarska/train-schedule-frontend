@@ -16,7 +16,7 @@ import Link from "next/link";
 import styles from "./Auth.module.scss";
 
 export const LoginForm = () => {
-  const { login } = useAuth();
+  const { login, authLoading } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -67,7 +67,14 @@ export const LoginForm = () => {
             helperText={formik.touched.password && formik.errors.password}
           />
 
-          <Button fullWidth variant="contained" type="submit" sx={{ mt: 2 }}>
+          <Button
+            fullWidth
+            variant="contained"
+            type="submit"
+            sx={{ mt: 2 }}
+            loading={authLoading}
+            disabled={authLoading}
+          >
             Login
           </Button>
         </form>

@@ -21,9 +21,11 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(false);
   const router = useRouter();
 
   const login = async (email: string, password: string): Promise<void> => {
+    setAuthLoading(true);
     try {
       const data = await loginUser(email, password);
       localStorage.setItem("token", data.token);
@@ -32,10 +34,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     } catch (err) {
       console.error("Login failed", err);
       toast.error("Login failed");
+    } finally {
+      setAuthLoading(false);
     }
   };
 
   const register = async (formData: RegisterForm): Promise<void> => {
+    setAuthLoading(true);
     try {
       const data = await registerUser(formData);
       localStorage.setItem("token", data.token);
@@ -44,6 +49,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     } catch (err) {
       console.error("Login failed", err);
       toast.error("Register failed");
+    } finally {
+      setAuthLoading(false);
     }
   };
 
@@ -74,7 +81,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, loading, authLoading, login, register, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

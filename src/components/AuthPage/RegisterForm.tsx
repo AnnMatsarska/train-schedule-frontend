@@ -9,7 +9,7 @@ import Link from "next/link";
 import styles from "./Auth.module.scss";
 
 export const RegisterForm = () => {
-  const { register } = useAuth();
+  const { register, authLoading } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -90,7 +90,14 @@ export const RegisterForm = () => {
             helperText={formik.touched.password && formik.errors.password}
           />
 
-          <Button fullWidth variant="contained" type="submit" sx={{ mt: 2 }}>
+          <Button
+            fullWidth
+            variant="contained"
+            type="submit"
+            sx={{ mt: 2 }}
+            loading={authLoading}
+            disabled={authLoading}
+          >
             Register
           </Button>
         </form>
